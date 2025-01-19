@@ -1,3 +1,4 @@
+using UserTasksAPI.DTO;
 using UserTasksAPI.Models;
 
 namespace UserTasksAPI.Repositories
@@ -6,8 +7,8 @@ namespace UserTasksAPI.Repositories
     {
         Task<User> AuthenticateAsync(string username, string password);
         Task<User> GetUserByUsernameAsync(string username);
-        Task<User> GetUserByIdAsync(int id);
-        Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<UserDto> GetUserByIdAsync(int id);
+        Task<IEnumerable<UserDto>> GetAllUsersAsync();
         Task<User> CreateUserAsync(User user);
         Task<User> UpdateUserAsync(User user);
         Task<bool> DeleteUserAsync(int id);

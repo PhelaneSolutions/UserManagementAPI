@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UserTasksAPI.DTO;
 using UserTasksAPI.Interfaces;
 using UserTasksAPI.Models;
 using UserTasksAPI.Repositories;
@@ -25,7 +26,7 @@ namespace UserTasksAPI.Controllers
         /// </summary>
         /// <returns>A list of users.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
         {
             var users = await _userService.GetAllUsersAsync();
             return Ok(users);
@@ -36,7 +37,7 @@ namespace UserTasksAPI.Controllers
         /// <param name="id">The user ID.</param>
         /// <returns>The user with the specified ID.</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserDto>> GetUser(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
@@ -78,7 +79,7 @@ namespace UserTasksAPI.Controllers
             }
 
             await _userService.UpdateUserAsync(id,user);
-            return Ok("Deleted Successfully");
+            return Ok(new { message = "Updated Successfully" });
         }
 
         /// <summary>

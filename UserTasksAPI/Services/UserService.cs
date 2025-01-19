@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UserTasksAPI.Data;
+using UserTasksAPI.DTO;
 using UserTasksAPI.Interfaces;
 using UserTasksAPI.Models;
 using UserTasksAPI.Repositories;
@@ -38,12 +39,24 @@ namespace UserTasksAPI.Services
             return user;
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<UserDto> GetUserByIdAsync(int id)
         {
-            return await _userRepository.GetUserByIdAsync(id);
+            var userDto = await _userRepository.GetUserByIdAsync(id);
+            if (userDto == null)
+            {
+                return null;
+            }
+
+            var user = new UserDto
+            {
+                Username = userDto.Username,
+                Email = userDto.Email,
+            };
+
+            return user;
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
             return await _userRepository.GetAllUsersAsync();
         }

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using UserTasksAPI.DTO;
 using UserTasksAPI.Models;
 
 namespace UserTasksAPI.Data

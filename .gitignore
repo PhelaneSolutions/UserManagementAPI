@@ -1,6 +1,5 @@
-# Ignore build artifacts
 bin/
 obj/
-
-# Ignore Coverlet files
 CoverletSourceRootsMapping_*
+
+Migrations/

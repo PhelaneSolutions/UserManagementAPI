@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using UserTasksAPI.Data;
+using UserTasksAPI.DTO;
 using UserTasksAPI.Interfaces;
 using UserTasksAPI.Models;
 
@@ -21,7 +22,7 @@ namespace UserTasksAPI.Repositories
 
         }
 
-        public async Task<User> GetUserByIdAsync(int id)
+        public async Task<UserDto> GetUserByIdAsync(int id)
         {
             try
             {
@@ -31,7 +32,12 @@ namespace UserTasksAPI.Repositories
                     _logger.LogWarning("User with id {UserId} not found.", id);
                     return null;
                 }
-                return user;
+                return new UserDto
+                {
+                    Username = user.Username,
+                    Email = user.Email,
+                    // map other properties as needed
+                };
             }
             catch (Exception ex)
             {
@@ -40,11 +46,18 @@ namespace UserTasksAPI.Repositories
             }
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
             try
             {
-                return await _context.Users.ToListAsync();
+                var users = await _context.Users.ToListAsync();
+                var userDtos = users.Select(user => new UserDto
+                {
+                    Username = user.Username,
+                    Email = user.Email,
+                    // map other properties as needed
+                });
+                return userDtos;
             }
             catch (Exception ex)
             {
@@ -87,9 +100,10 @@ namespace UserTasksAPI.Repositories
         {
             try
             {
-                var user = await GetUserByIdAsync(id);
-                if (user != null)
+                var userDto = await GetUserByIdAsync(id);
+                if (userDto != null)
                 {
+                    var user = await _context.Users.FindAsync(id);
                     _context.Users.Remove(user);
                     await _context.SaveChangesAsync();
                     return true;
